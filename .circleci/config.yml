@@ -1,0 +1,126 @@
+version: 2.1
+
+commands:
+  verify:
+    steps:
+      - run: npm ci
+      - run: node scripts/check-release-version.js
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
+
+jobs:
+  check:
+    docker:
+      - image: cimg/node:22.14.0
+    steps:
+      - checkout
+      - verify
+      - run: npm run build
+
+  linux:
+    docker:
+      - image: cimg/node:22.14.0
+    resource_class: medium
+    steps:
+      - checkout
+      - verify
+      - run: npm run release:tools -- --platform linux --arch x64
+      - run: npm run build:deb -- --x64
+      - run: node scripts/ci/stage-artifacts.mjs linux-x64
+      - store_artifacts:
+          path: release-artifacts/linux-x64
+      - persist_to_workspace:
+          root: release-artifacts
+          paths: [linux-x64]
+
+  windows:
+    machine:
+      image: windows-server-2022-gui:current
+      shell: powershell.exe -ExecutionPolicy Bypass
+    resource_class: windows.medium
+    steps:
+      - checkout
+      - run:
+          name: Verify and build Windows installer
+          command: ./scripts/ci/build-windows.ps1
+          no_output_timeout: 20m
+      - store_artifacts:
+          path: release-artifacts/win-x64
+      - persist_to_workspace:
+          root: release-artifacts
+          paths: [win-x64]
+
+  mac:
+    parameters:
+      arch:
+        type: enum
+        enum: [arm64, x64]
+    macos:
+      xcode: '16.4.0'
+    resource_class: m4pro.medium
+    steps:
+      - checkout
+      - run:
+          name: Install Node.js 22
+          command: bash scripts/ci/install-mac-node.sh
+      - verify
+      - run: npm run release:tools -- --platform darwin --arch << parameters.arch >>
+      - run:
+          name: Build Mac installer and update archive
+          command: |
+            export CSC_LINK="${MAC_CSC_LINK:-}"
+            export CSC_KEY_PASSWORD="${MAC_CSC_KEY_PASSWORD:-}"
+            npm run build:mac -- --<< parameters.arch >>
+          no_output_timeout: 20m
+      - run: node scripts/ci/stage-artifacts.mjs mac-<< parameters.arch >>
+      - store_artifacts:
+          path: release-artifacts/mac-<< parameters.arch >>
+      - persist_to_workspace:
+          root: release-artifacts
+          paths: [mac-<< parameters.arch >>]
+
+  publish:
+    docker:
+      - image: cimg/node:22.14.0
+    steps:
+      - checkout
+      - run: npm ci
+      - run: node scripts/check-release-version.js
+      - attach_workspace:
+          at: release-artifacts
+      - run:
+          name: Publish verified installers and update feeds to Cloudflare
+          command: node scripts/ci/publish-all.mjs
+          no_output_timeout: 20m
+
+workflows:
+  checks:
+    jobs:
+      - check:
+          filters:
+            tags:
+              ignore: /.*/
+  release:
+    jobs:
+      - linux:
+          filters: &release_tags
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+      - windows:
+          filters: *release_tags
+      - mac:
+          name: mac-arm64
+          arch: arm64
+          filters: *release_tags
+      - mac:
+          name: mac-x64
+          arch: x64
+          filters: *release_tags
+      - publish:
+          requires: [linux, windows, mac-arm64, mac-x64]
+          context: verti-studio-publishing
+          serial-group: verti-studio-production
+          filters: *release_tags

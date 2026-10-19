@@ -1,0 +1,20 @@
+import type { IpcMainInvokeEvent } from 'electron';
+import { logEngine } from '../../logging';
+import { {{ccase channel}}RequestSchema } from '@shared/validation/{{domain}}-schema';
+import type { {{pcase channel}}Request, {{pcase channel}}Response } from '@shared/ipc/types';
+
+const log = logEngine.createLogger('{{pcase domain}}Handlers');
+
+export async function handle{{pcase channel}}(
+  _event: IpcMainInvokeEvent,
+  data: {{pcase channel}}Request,
+): Promise<{{pcase channel}}Response> {
+  try {
+    const _parsed = {{ccase channel}}RequestSchema.parse(data);
+    // TODO: implement
+    return { success: true };
+  } catch (err) {
+    log.error('handle{{pcase channel}} failed', err, { data });
+    return { success: false, error: String(err) };
+  }
+}

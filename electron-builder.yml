@@ -1,0 +1,74 @@
+appId: com.vertistudio.desktop
+productName: Verti Studio
+# Optional: copyright: "Copyright © 2026 Your Name"
+
+directories:
+  output: dist
+  buildResources: resources
+
+asar: true
+files:
+  - out/**/*
+  - package.json
+  - resources/icon.png
+
+afterPack: scripts/release-after-pack.js
+publish:
+  provider: generic
+  url: https://verti-studio.oligasibanda.workers.dev/updates/${os}-${arch}/
+  useMultipleRangeRequest: false
+
+# ----- Windows -----
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  artifactName: ${name}-${version}-${arch}-setup.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: ${productName}
+
+# ----- macOS (unsigned; Gatekeeper will ask the user to confirm on first open) -----
+mac:
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+    - target: zip
+      arch: [arm64, x64]
+  category: public.app-category.video
+  artifactName: ${name}-${version}-${arch}.${ext}
+  binaries:
+    - Contents/Resources/tools/ffmpeg
+    - Contents/Resources/tools/ffprobe
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.inherit.plist
+  notarize: true
+
+dmg:
+  artifactName: ${name}-${version}-${arch}.${ext}
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+
+# ----- Linux -----
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  category: AudioVideo
+  maintainer: Verti Studio
+  executableName: verti-studio
+  artifactName: ${name}-${version}-${arch}.${ext}

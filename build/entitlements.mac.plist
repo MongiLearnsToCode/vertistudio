@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!--
+    Mandatory: V8 (the JS engine inside Electron) generates and executes
+    machine code at runtime. Under hardenedRuntime: true these two
+    entitlements are non-negotiable, or the packaged app crashes at launch.
+  -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/>
+  <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/>
+
+  <!--
+    Convenience entitlements (decide per-app). Both broaden the dylib
+    injection surface in exchange for "any 3rd-party native module just
+    works" without re-signing. If you drop these, drop them from
+    entitlements.mac.inherit.plist too — the two files must stay in sync.
+  -->
+  <key>com.apple.security.cs.disable-library-validation</key>
+  <true/>
+  <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+  <true/>
+</dict>
+</plist>

@@ -1,0 +1,286 @@
+@import 'tailwindcss';
+
+@source "../../features/**/*.tsx";
+@source "../../shared/**/*.tsx";
+
+@theme {
+  --color-app-deep: #131316;
+  --color-app-base: #1a1a1e;
+  --color-app-surface: #222226;
+  --color-app-hover: #2a2a2e;
+  --color-app-active: #2a2a30;
+  --color-app-player: #0d0d0f;
+  --color-accent: #7f77dd;
+  --color-accent-light: #c8b4ff;
+  --color-accent-green: #5dcaa5;
+  --color-accent-amber: #ef9f27;
+  --color-accent-red: #f09595;
+  --color-border: #2a2a2e;
+  --color-border-hover: #3a3a3e;
+  --color-border-input: #333333;
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #bbbbbb;
+  --color-text-muted: #999999;
+  --color-text-dim: #666666;
+
+  --ease-emphasis: cubic-bezier(0.2, 0, 0, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast: 120ms;
+  --duration-normal: 220ms;
+  --duration-slow: 360ms;
+
+  --z-dropdown: 1000;
+  --z-popover: 1100;
+  --z-modal: 1200;
+  --z-toast: 1300;
+}
+
+@utility duration-fast {
+  transition-duration: var(--duration-fast);
+}
+@utility duration-normal {
+  transition-duration: var(--duration-normal);
+}
+@utility duration-slow {
+  transition-duration: var(--duration-slow);
+}
+
+@utility z-dropdown {
+  z-index: var(--z-dropdown);
+}
+@utility z-popover {
+  z-index: var(--z-popover);
+}
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+
+@utility app-region-drag {
+  -webkit-app-region: drag;
+}
+@utility app-region-no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Light theme — overrides the dark defaults in @theme.
+   data-theme is set on <html> by ThemeContext after resolving
+   the user preference (system/light/dark/slate/midnight) against nativeTheme. */
+[data-theme='light'] {
+  --color-app-deep: #ececef;
+  --color-app-base: #f5f5f7;
+  --color-app-surface: #ffffff;
+  --color-app-hover: #ebebef;
+  --color-app-active: #e1e1e6;
+  --color-app-player: #f0f0f3;
+  --color-accent: #6358c9;
+  --color-accent-light: #4d44a8;
+  --color-accent-green: #1a7d5d;
+  --color-accent-amber: #b67200;
+  --color-accent-red: #c14545;
+  --color-border: #d6d6dc;
+  --color-border-hover: #c2c2c8;
+  --color-border-input: #cfcfd5;
+  --color-text-primary: #1a1a1e;
+  --color-text-secondary: #404048;
+  --color-text-muted: #6a6a72;
+  --color-text-dim: #9a9aa2;
+}
+
+/* Slate — cool blue-gray dark. Status colors (green/amber/red) stay
+   close to defaults so success/warning/error semantics carry across
+   themes. */
+[data-theme='slate'] {
+  --color-app-deep: #0e1318;
+  --color-app-base: #141a21;
+  --color-app-surface: #1c232c;
+  --color-app-hover: #232c37;
+  --color-app-active: #2a3441;
+  --color-app-player: #0a0e12;
+  --color-accent: #5a8acf;
+  --color-accent-light: #92b4e0;
+  --color-accent-green: #5dcaa5;
+  --color-accent-amber: #ef9f27;
+  --color-accent-red: #f09595;
+  --color-border: #2c3744;
+  --color-border-hover: #3b485a;
+  --color-border-input: #344050;
+  --color-text-primary: #e0e6ed;
+  --color-text-secondary: #b4becb;
+  --color-text-muted: #8a93a3;
+  --color-text-dim: #5d6573;
+}
+
+/* High-contrast — WCAG AAA contrast (≥7:1) on body text against the
+   near-black background. Pure-white borders + bright-yellow accent so
+   focus rings stay visible. Don't use for "looks neat" — it's an a11y
+   variant for users who need it. */
+[data-theme='hc'] {
+  --color-app-deep: #000000;
+  --color-app-base: #0a0a0a;
+  --color-app-surface: #1a1a1a;
+  --color-app-hover: #262626;
+  --color-app-active: #333333;
+  --color-app-player: #000000;
+  --color-accent: #ffd700;
+  --color-accent-light: #ffe55c;
+  --color-accent-green: #00ff7f;
+  --color-accent-amber: #ffa500;
+  --color-accent-red: #ff5c5c;
+  --color-border: #ffffff;
+  --color-border-hover: #ffffff;
+  --color-border-input: #ffffff;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #f0f0f0;
+  --color-text-muted: #cccccc;
+  --color-text-dim: #999999;
+}
+
+/* Midnight — deep violet, vivid purple accent. */
+[data-theme='midnight'] {
+  --color-app-deep: #0d0a17;
+  --color-app-base: #14101f;
+  --color-app-surface: #1d1730;
+  --color-app-hover: #251f3a;
+  --color-app-active: #2c2545;
+  --color-app-player: #08060f;
+  --color-accent: #a78bfa;
+  --color-accent-light: #d8c8ff;
+  --color-accent-green: #5dcaa5;
+  --color-accent-amber: #ef9f27;
+  --color-accent-red: #f09595;
+  --color-border: #2a2540;
+  --color-border-hover: #3a3354;
+  --color-border-input: #322b48;
+  --color-text-primary: #ece8f5;
+  --color-text-secondary: #c0bcd0;
+  --color-text-muted: #8e8aa0;
+  --color-text-dim: #5e5a72;
+}
+
+/* Density — rescales Tailwind 4's --spacing token, which propagates to
+   every spacing utility (p-N, m-N, gap-N, ...). data-density is set on
+   <html> by ThemeContext from the persisted `density` setting. */
+[data-density='compact'] {
+  --spacing: 0.18rem;
+}
+
+/* Motion primitives — keyframes consumed by FadeIn/SlideIn/ScaleIn.
+   The `prefers-reduced-motion: reduce` block forces every animation
+   to a near-zero duration so transitions become instant. */
+@keyframes motion-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes motion-slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-slide-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes motion-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes motion-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Honors OS-level reduced-motion preference. Short non-zero duration
+     keeps onAnimationEnd callbacks firing for any code that subscribes. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-app-base);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--color-app-base);
+}
+
+body {
+  scrollbar-gutter: stable;
+}
+
+/* a11y baseline — every interactive element gets a visible focus ring on
+   keyboard navigation. Components that style their own ring (Sidebar nav
+   buttons, Radio dots, Switch knobs) opt in via focus-visible:ring-* and
+   their style takes precedence. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

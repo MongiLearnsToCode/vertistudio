@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+out/
+dist/
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Packaging staging
+.package-*/
+
+# Release binaries and generated hosting configuration
+release/
+release-artifacts/
+.wrangler/
+
+.release-secrets/
+
+# Local coding-agent state
+.agents/
+.codex/

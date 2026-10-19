@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160" width="720" height="160" role="img" aria-label="App wordmark">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1e" />
+      <stop offset="100%" stop-color="#0d0d0f" />
+    </linearGradient>
+  </defs>
+  <rect width="720" height="160" rx="20" fill="url(#bg)" />
+  <g transform="translate(36 36)" fill="none" stroke="#7F77DD" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="12" width="80" height="64" rx="8" />
+    <path d="M26 76 L26 88 L62 88 L62 76" />
+    <path d="M20 38 L36 38 M20 54 L66 54" stroke="#c8b4ff" />
+  </g>
+  <text x="148" y="98" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="56" font-weight="600" fill="#e0e0e0">
+    Electron Starter
+  </text>
+</svg>
