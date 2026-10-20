@@ -1,7 +1,7 @@
 {
   "name": "verti-studio",
   "productName": "Verti Studio",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Local video cutting and vertical export studio",
   "main": "out/main/index.js",
   "author": "Verti Studio",
