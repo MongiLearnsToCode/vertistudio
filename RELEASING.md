@@ -6,7 +6,7 @@ Installers contain Electron, application dependencies, FFmpeg and FFprobe. A sup
 
 ## Release layout
 
-- Site: https://verti-studio.oligasibanda.workers.dev
+- Site: https://vertistudio.clipverti.com
 - Worker: `scripts/cloudflare/worker.mjs`, configured by `scripts/cloudflare/wrangler.jsonc`.
 - Authenticated publishing is enabled with the app-specific `PUBLISH_TOKEN` Cloudflare secret in the connected Cloudflare account. The token is never sent to app users.
 - Optional read-only entrypoint: `scripts/cloudflare/public-worker.mjs` (for disabling publishing while retaining downloads).
@@ -30,7 +30,7 @@ CircleCI runs checks on branch pushes. Stable version tags run four installer jo
 
 The configuration uses the documented [Windows Server 2022 executor](https://circleci.com/docs/guides/execute/using-windows/) and [M4 Pro macOS executor](https://circleci.com/docs/guides/execute/using-macos/). CircleCI's config compiler has accepted the configuration. Native Windows and Mac installation checks remain necessary.
 
-The first tagged build, `v0.1.1`, successfully built and verified Windows and Linux installers. Its Mac jobs passed checks but failed because an empty signing-certificate variable was treated as a path. The corrected Mac recipe leaves certificate variables unset for unsigned builds and forwards them only when a certificate is configured. Version 0.1.2 retries all platforms; 0.1.1 was not published to the download site because publication waits for every platform.
+The first tagged build, `v0.1.1`, successfully built and verified Windows and Linux installers. Its Mac jobs failed because an empty signing-certificate variable was treated as a path. Version 0.1.2 corrected the signing environment and built Linux and Windows, but the Mac jobs attempted both architectures while each job prepared only one architecture of video tools. Version 0.1.3 removes the fixed architecture list so each Mac job builds only its requested architecture. Neither failed tag was published to the download site because publication waits for every platform.
 
 The publishing secret is already configured in Cloudflare. To rotate it, generate a fresh app-specific value, update the Worker's `PUBLISH_TOKEN` with `npx wrangler secret put PUBLISH_TOKEN --config scripts/cloudflare/wrangler.jsonc`, then update both the CircleCI context and the ignored local credential file. Never commit a secret to the Wrangler configuration.
 

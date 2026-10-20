@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.3] - Unreleased
+
+- Publish downloads and update feeds on `vertistudio.clipverti.com`.
+- Build each Mac architecture separately so its installer includes matching video tools.
+
 ## [0.1.0] - 2026-10-05
 
 First public release. A free cut of the Desktop App Boilerplate: the app shell, the typed and
