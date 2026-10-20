@@ -69,8 +69,12 @@ jobs:
       - run:
           name: Build Mac installer and update archive
           command: |
-            export CSC_LINK="${MAC_CSC_LINK:-}"
-            export CSC_KEY_PASSWORD="${MAC_CSC_KEY_PASSWORD:-}"
+            if [ -n "${MAC_CSC_LINK:-}" ]; then
+              export CSC_LINK="$MAC_CSC_LINK"
+              export CSC_KEY_PASSWORD="${MAC_CSC_KEY_PASSWORD:-}"
+            else
+              unset CSC_LINK CSC_KEY_PASSWORD
+            fi
             npm run build:mac -- --<< parameters.arch >>
           no_output_timeout: 20m
       - run: node scripts/ci/stage-artifacts.mjs mac-<< parameters.arch >>
