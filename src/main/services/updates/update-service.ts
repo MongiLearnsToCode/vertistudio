@@ -24,10 +24,10 @@ export function initUpdates() {
         JSON.parse(fs.readFileSync(path.join(process.resourcesPath, 'release.json'), 'utf8')),
       );
       if (!config.macSigned)
-        manualDownloadUrl = `https://verti-studio.oligasibanda.workers.dev/download/mac-${process.arch}`;
+        manualDownloadUrl = `https://vertistudio.clipverti.com/download/mac-${process.arch}`;
     } catch (error) {
       log.warn('macOS signing information unavailable', { error: String(error) });
-      manualDownloadUrl = `https://verti-studio.oligasibanda.workers.dev/download/mac-${process.arch}`;
+      manualDownloadUrl = `https://vertistudio.clipverti.com/download/mac-${process.arch}`;
     }
   }
   const updater = disabled ? undefined : electronUpdater.autoUpdater;
