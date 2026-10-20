@@ -17,7 +17,7 @@ async function main() {
   });
   await fs.writeFile(
     path.join(destination, 'resources', 'app-update.yml'),
-    'provider: generic\nurl: https://verti-studio.oligasibanda.workers.dev/updates/linux-x64/\nuseMultipleRangeRequest: false\nupdaterCacheDirName: verti-studio-updater\n',
+    'provider: generic\nurl: https://vertistudio.clipverti.com/updates/linux-x64/\nuseMultipleRangeRequest: false\nupdaterCacheDirName: verti-studio-updater\n',
   );
   await fs.writeFile(path.join(destination, 'resources', 'package-type'), 'deb');
   console.log('Staged the local Linux app with offline video tools and its release update feed.');

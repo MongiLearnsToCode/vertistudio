@@ -4,7 +4,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
-const origin = 'https://verti-studio.oligasibanda.workers.dev';
+const origin = 'https://vertistudio.clipverti.com';
 const platforms = ['win-x64', 'mac-x64', 'mac-arm64', 'linux-x64'];
 export async function digest(file, algorithm) {
   const hash = createHash(algorithm);
